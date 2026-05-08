@@ -23,9 +23,9 @@ public class QLTK {
         positions.add(new Position(1, PositionName.DEV));
         positions.add(new Position(2, PositionName.TEST));
 
-        accounts.add(new Account(1, "username1", "fullname1", "email1", new Department(1, "Sale"), new Position(1, PositionName.DEV)));
-        accounts.add(new Account(2, "username2", "fullname2", "email2", new Department(2, "Marketing"), new Position(2, PositionName.DEV)));
-        accounts.add(new Account(3, "username3", "fullname3", "email3", new Department(3, "Bảo vệ"), new Position(1, PositionName.DEV)));
+        accounts.add(new Account("username1", "fullname1", "email1", new Department(1, "Sale"), new Position(1, PositionName.DEV)));
+        accounts.add(new Account("username2", "fullname2", "email2", new Department(2, "Marketing"), new Position(2, PositionName.DEV)));
+        accounts.add(new Account("username3", "fullname3", "email3", new Department(3, "Bảo vệ"), new Position(1, PositionName.DEV)));
 
         while (true) {
             System.out.println("==== Mời bạn chọn chức năng ====");
@@ -79,11 +79,8 @@ public class QLTK {
                     break;
                 default:
                     System.out.println("Nhập sai! Mời bạn chọn lại!");
-
             }
         }
-
-
     }
 
     public static void addDepartment() {
@@ -99,9 +96,6 @@ public class QLTK {
     }
 
     public static void addAccount() {
-        System.out.println("Mời bạn nhập ID: ");
-        int accID = sc.nextInt();
-        sc.nextLine();
         System.out.println("Mời bạn nhập email: ");
         String email = sc.nextLine();
         System.out.println("Mời bạn nhập username: ");
@@ -137,7 +131,7 @@ public class QLTK {
                 break;
             }
         }
-        Account account = new Account(accID, email, username, fullname, department, position);
+        Account account = new Account(email, username, fullname, department, position);
         accounts.add(account);
         System.out.println("Thêm account thành công!!!");
     }
@@ -173,7 +167,7 @@ public class QLTK {
         System.out.printf("|%5s|%20s|%20s|%20s|%20s|%20s|\n", "ID", "FullName", "Email", "Username", "Tên phòng ban", "Tên chức vụ");
         System.out.println("+-----+--------------------+--------------------+--------------------+--------------------+--------------------+");
         for (Account account : accounts) {
-            System.out.printf("|%5s|%20s|%20s|%20s|%20s|%20s|\n", account.getId(), account.getFullName(), account.getEmail(), account.getUsername(), account.getDepartment().getId(), account.getPosition().getName().name());
+            System.out.printf("|%5s|%20s|%20s|%20s|%20s|%20s|\n", account.getId(), account.getFullName(), account.getEmail(), account.getUsername(), account.getDepartment().getName(), account.getPosition().getName().name());
         }
         System.out.println("+-----+--------------------+--------------------+--------------------+--------------------+--------------------+");
     }
@@ -207,7 +201,7 @@ public class QLTK {
         System.out.println("+-----+--------------------+--------------------+--------------------+--------------------+--------------------+");
         for (Account account : accounts) {
             if (depName.equalsIgnoreCase(account.getDepartment().getName())) {
-                System.out.printf("|%5s|%20s|%20s|%20s|%20s|%20s|\n", account.getId(), account.getFullName(), account.getEmail(), account.getUsername(), account.getDepartment().getId(), account.getPosition().getName().name());
+                System.out.printf("|%5s|%20s|%20s|%20s|%20s|%20s|\n", account.getId(), account.getFullName(), account.getEmail(), account.getUsername(), account.getDepartment().getName(), account.getPosition().getName().name());
                 checkDepartmentNameExists = true;
             }
         }
@@ -227,7 +221,7 @@ public class QLTK {
         System.out.println("+-----+--------------------+--------------------+--------------------+--------------------+--------------------+");
         for (Account account : accounts) {
             if (poName.equalsIgnoreCase(account.getPosition().getName().name())) {
-                System.out.printf("|%5s|%20s|%20s|%20s|%20s|%20s|\n", account.getId(), account.getFullName(), account.getEmail(), account.getUsername(), account.getDepartment().getId(), account.getPosition().getName().name());
+                System.out.printf("|%5s|%20s|%20s|%20s|%20s|%20s|\n", account.getId(), account.getFullName(), account.getEmail(), account.getUsername(), account.getDepartment().getName(), account.getPosition().getName().name());
                 checkPositionNameExists = true;
             }
         }
@@ -242,16 +236,19 @@ public class QLTK {
         System.out.println("Mời bạn nhập tên cần xóa: ");
         String accNameDelete = sc.nextLine();
         List<Account> accountsDelete = new ArrayList<>();
+        int count = 0;
         for (Account account : accounts) {
             if (accNameDelete.equalsIgnoreCase(account.getFullName())) {
                 accountsDelete.add(account);
+                count++;
             }
         }
         boolean checkAccountNameExists = accounts.removeAll(accountsDelete);
+//        boolean checkAccountNameExists = accounts.removeIf(i -> i.getFullName().equals(accountsDelete));
         if (!checkAccountNameExists) {
             System.out.println("Không có account nào có tên như trên trong hệ thống!");
         } else {
-            System.out.println("Xóa thành công!");
+            System.out.println("Xóa thành công "+ count + " account !");
         }
     }
 }

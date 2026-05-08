@@ -1,4 +1,4 @@
-package PACKAGE_NAME;
+package backend;
 
 public class Exercise1 {
 }

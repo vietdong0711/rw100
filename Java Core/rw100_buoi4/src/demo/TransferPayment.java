@@ -1,6 +1,14 @@
-package entity;
+package demo;
 
-public class TransferPayment {
+public class TransferPayment implements INganHang, INganHang1 {
+
+
+    @Override
+    public void pay1(int a) {
+
+    }
+
+    @Override
     public void pay() {
         // Kiểm tra tài khoản có đủ tiền ko
         boolean checkTaiKhoan = true;
@@ -10,4 +18,6 @@ public class TransferPayment {
             System.out.println("Tài khoản không đủ");
         }
     }
+
+
 }

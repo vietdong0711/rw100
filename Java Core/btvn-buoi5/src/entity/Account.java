@@ -10,13 +10,14 @@ public class Account {
     private Department department;
     private Position position;
     private LocalDate createDate;
+    public static int ACC_ID=1;
 
     public Account() {
 
     }
 
-    public Account(int id, String username, String fullName, String email, Department department, Position position) {
-        this.id = id;
+    public Account(String username, String fullName, String email, Department department, Position position) {
+        this.id = ACC_ID++;
         this.username = username;
         this.fullName = fullName;
         this.email = email;

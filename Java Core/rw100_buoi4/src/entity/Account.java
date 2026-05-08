@@ -1,3 +1,5 @@
+package entity;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,8 +16,8 @@ public class Account {
 
     }
 
-    public Account(int accountID, String fullname, String email, String userName) {
-        this.accountID = accountID;
+    public Account(int id, String fullname, String email, String userName) {
+        this.accountID = id;
         this.fullname = fullname;
         this.email = email;
         this.userName = userName;
@@ -79,7 +81,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "demo.Account{" +
+        return "demo.entity.Account{" +
                 "accountID=" + accountID +
                 ", email='" + email + '\'' +
                 ", userName='" + userName + '\'' +
@@ -90,19 +92,10 @@ public class Account {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return accountID == account.accountID;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(accountID, userName, department, position, createDate);
-    }
 
 
-    public void diHoc() {
+    private void diHoc() {
+        System.out.println("Account đang đi học");
     }
+
 }

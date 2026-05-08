@@ -1,6 +1,9 @@
-package entity;
+package demo;
 
-public class DebitPayment {
+public class DebitPayment extends NganHang, NganHang1 {
+
+
+    @Override
     public void pay() {
         // Kiểm tra xem vượt hạn mức chưa
         boolean checkHanMuc = true;
@@ -9,5 +12,10 @@ public class DebitPayment {
         } else {
             System.out.println("Thanh toán thành công");
         }
+    }
+
+    @Override
+    public void pay1() {
+
     }
 }
