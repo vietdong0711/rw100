@@ -1,4 +1,5 @@
 package demo;
 
-public class NganHang1 {
+public abstract class NganHang1 {
+    private String id;
 }
