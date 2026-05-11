@@ -4,6 +4,7 @@ import entity.Account;
 import entity.Department;
 import entity.Position;
 import enums.PositionName;
+import utils.JDBCUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,21 +18,14 @@ import java.util.List;
 public class QLAccount {
     // lấy ds các account trong DB và in ra
     public static void showAccount() throws ClassNotFoundException {
-        String url = "jdbc:mysql://localhost:3306/rw100_testing_system";
-        String username = "root";
-        String password = "root";// mk mysql
         try {
             // b1: kết nối đến DB
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, username, password);
-            if (connection != null) {
-                System.out.println("Kết nối DB thành công");
-            }
+            Connection connection = JDBCUtils.getConnection();
             // b2: lấy dữ liệu từ bảng account
             String sql = "select acc.*, de.department_name, po.position_name \n" +
                     "from account acc\n" +
-                    "left join department de on acc.department_id = de.department_id\n" +
-                    "left join position po on acc.position_id = po.position_id;";
+                    "left join department de  on acc.department_id = de.department_id\n" +
+                    "left join position po on po.position_id = acc.position_id;\n";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);// thực thi câu lệnh sql và gán bảng trả ra vào ResultSet rs
             List<Account> accounts = new ArrayList<>();// lưu lại dữ liệu lấy từ DB
@@ -45,6 +39,7 @@ public class QLAccount {
                 Integer positionID = rs.getInt("position_id");
                 String positionName = rs.getString("position_name");
                 LocalDate createDate = rs.getDate("create_date").toLocalDate();
+                                        // trả ra 1 đối tượng Date          // chuyển thành LocalDate
 
                 Department department = new Department(departmentID, departmentName);
                 Position position = new Position(positionID, PositionName.valueOf(positionName));
@@ -63,22 +58,14 @@ public class QLAccount {
 
 
         } catch (Exception e) {
-            System.out.println("Kết nối DB ko thành công");
             e.printStackTrace();
         }
     }
 
     public static void findByUsernameAndFullName(String usernameSearch, String fullNameSearch) throws ClassNotFoundException {
-        String url = "jdbc:mysql://localhost:3306/rw100_testing_system";
-        String username = "root";
-        String password = "root";// mk mysql
         try {
             // b1: kết nối đến DB
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, username, password);
-            if (connection != null) {
-                System.out.println("Kết nối DB thành công");
-            }
+            Connection connection = JDBCUtils.getConnection();
             // b2: lấy dữ liệu từ bảng account
             String sql = "select acc.*, de.department_name, po.position_name \n" +
                     "from account acc\n" +
@@ -114,9 +101,11 @@ public class QLAccount {
             for (Account account : accounts) {
                 System.out.printf("|%5s|%20s|%20s|%20s|%20s|%20s|\n", account.getId(), account.getFullName(), account.getEmail(), account.getUsername(), account.getDepartment().getName(), account.getPosition().getName().name());
             }
+            if (accounts.size() == 0) {
+                System.out.println("Không có kết quả!");
+            }
             System.out.println("+-----+--------------------+--------------------+--------------------+--------------------+--------------------+");
         } catch (Exception e) {
-            System.out.println("Kết nối DB ko thành công");
             e.printStackTrace();
         }
     }
