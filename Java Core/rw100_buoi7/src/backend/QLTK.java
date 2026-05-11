@@ -16,17 +16,6 @@ public class QLTK {
     private static Scanner sc = new Scanner(System.in);
 
     public static void run() {
-        departments.add(new Department(1, "Sale"));
-        departments.add(new Department(2, "Marketing"));
-        departments.add(new Department(3, "Bảo vệ"));
-
-        positions.add(new Position(1, PositionName.DEV));
-        positions.add(new Position(2, PositionName.TEST));
-
-        accounts.add(new Account("username1", "fullname1", "email1", new Department(1, "Sale"), new Position(1, PositionName.DEV)));
-        accounts.add(new Account("username2", "fullname2", "email2", new Department(2, "Marketing"), new Position(2, PositionName.DEV)));
-        accounts.add(new Account("username3", "fullname3", "email3", new Department(3, "Bảo vệ"), new Position(1, PositionName.DEV)));
-
         while (true) {
             System.out.println("==== Mời bạn chọn chức năng ====");
             System.out.println("1. Thêm phòng ban");
@@ -131,7 +120,7 @@ public class QLTK {
                 break;
             }
         }
-        Account account = new Account(email, username, fullname, department, position);
+        Account account = new Account();
         accounts.add(account);
         System.out.println("Thêm account thành công!!!");
     }

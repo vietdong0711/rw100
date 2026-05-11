@@ -1,6 +1,8 @@
 package frontend;
 
+import backend.QLAccount;
 import backend.QLDepartment;
+import backend.QLPosition;
 import backend.QLTK;
 
 import java.sql.SQLException;
@@ -15,7 +17,11 @@ public class Main {
 //
 //        Account.showId();
 //        QLDepartment.showDepartment();
-        QLDepartment.findByNameAndId("Sale", 2);
+//        QLDepartment.showDepartmentGreaterOrEqualsTo2();
+//        QLPosition.showPosition();
+//        QLPosition.findByName("DEV");
+        QLAccount.showAccount();
+        QLAccount.findByUsernameAndFullName("a", "a");
 
     }
 }

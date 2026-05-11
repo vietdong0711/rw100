@@ -10,20 +10,19 @@ public class Account {
     private Department department;
     private Position position;
     private LocalDate createDate;
-    public static int ACC_ID=1;
 
     public Account() {
 
     }
 
-    public Account(String username, String fullName, String email, Department department, Position position) {
-        this.id = ACC_ID++;
+    public Account(int id, String username, String fullName, String email, Department department, Position position, LocalDate createDate) {
+        this.id = id;
         this.username = username;
         this.fullName = fullName;
         this.email = email;
         this.department = department;
         this.position = position;
-        this.createDate = LocalDate.now();
+        this.createDate = createDate;
     }
 
     public int getId() {
