@@ -23,8 +23,7 @@ public class JDBCUtils {
     }
 
     // close cho 3 interface connection,statement,rs
-    public static void closeConnection
-    (Connection connection, Statement statement, ResultSet rs) throws SQLException {
+    public static void closeConnection(Connection connection, Statement statement, ResultSet rs) throws SQLException {
         // nếu cái nào có dữ liệu (đang mở) != null
         if (connection != null) {
             connection.close();
