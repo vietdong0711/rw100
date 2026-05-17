@@ -7,6 +7,7 @@ import java.util.List;
 public interface IDepartmentService {
     List<Department> findAll();
     boolean create(String name);
+    boolean update(int id, String name);
     boolean delete(int id);
-    boolean update(int id, String updateName);
+    boolean checkExistName(String name, Integer id);
 }

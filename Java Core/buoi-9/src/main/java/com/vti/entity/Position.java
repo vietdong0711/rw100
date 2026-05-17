@@ -1,5 +1,6 @@
 package com.vti.entity;
 
+
 import com.vti.enums.PositionName;
 
 public class Position {
@@ -29,13 +30,5 @@ public class Position {
 
     public void setName(PositionName name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Position{" +
-                "id=" + id +
-                ", name=" + name +
-                '}';
     }
 }

@@ -7,27 +7,26 @@ import com.vti.entity.Department;
 import java.util.List;
 
 public class DepartmentController {
-    // khoi tao departmentService
-    private IDepartmentService departmentService = new DepartmentServiceImpl();
+    // khởi tạo service
+    IDepartmentService departmentService = new DepartmentServiceImpl();
 
     public List<Department> findAll() {
-        // lay ds tu service
-        List<Department> departments = departmentService.findAll();
-        return departments;
+        return departmentService.findAll();// lấy ds từ service
     }
 
     public boolean create(String name) {
-        boolean check = departmentService.create(name);
-        return check;
+        return departmentService.create(name);
+    }
+
+    public boolean update(int id, String name) {
+        return departmentService.update(id, name);
     }
 
     public boolean delete(int id) {
-        boolean check = departmentService.delete(id);
-        return check;
+        return departmentService.delete(id);
     }
 
-    public boolean update(int id, String updateName) {
-        boolean check = departmentService.update(id, updateName);
-        return check;
+    public boolean checkExistName(String name, Integer id) {
+        return departmentService.checkExistName(name, id);
     }
 }

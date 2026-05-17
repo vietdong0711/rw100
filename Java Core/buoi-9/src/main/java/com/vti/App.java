@@ -1,6 +1,7 @@
 package com.vti;
 
 import com.vti.frontend.DepartmentFunction;
+import com.vti.frontend.Menu;
 
 /**
  * Hello world!
@@ -8,8 +9,8 @@ import com.vti.frontend.DepartmentFunction;
  */
 public class App {
     public static void main(String[] args) {
-        DepartmentFunction function = new DepartmentFunction();
-        function.run();
+        Menu menu = new Menu();
+        menu.run();
     }
 }
 //controller

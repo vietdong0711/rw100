@@ -8,33 +8,32 @@ import com.vti.entity.Department;
 import java.util.List;
 
 public class DepartmentServiceImpl implements IDepartmentService {
-    // khoi tao doi tuong departmentRepository
-    private IDepartmentRepository departmentRepository = new DepartmentRepositoryImpl();
+    // khởi tạo repository
+    IDepartmentRepository departmentRepository = new DepartmentRepositoryImpl();
 
     @Override
     public List<Department> findAll() {
-        // lay ra ds department tu repository
-        List<Department> departments = departmentRepository.findAll();
-        return departments;
+        // che dấu đi thông tin (ẩn đi thông tin)
+        return departmentRepository.findAll();// lấy dc ds từ repository
     }
 
     @Override
     public boolean create(String name) {
-        boolean check = departmentRepository.create(name);
-        return check;
+        return departmentRepository.create(name);
+    }
+
+    @Override
+    public boolean update(int id, String name) {
+        return departmentRepository.update(id, name);
     }
 
     @Override
     public boolean delete(int id) {
-        boolean check = departmentRepository.delete(id);
-        return check;
+        return departmentRepository.delete(id);
     }
 
     @Override
-    public boolean update(int id, String updateName) {
-        boolean check = departmentRepository.update(id, updateName);
-        return check;
+    public boolean checkExistName(String name, Integer id) {
+        return departmentRepository.checkExistName(name, id);
     }
-
-
 }
