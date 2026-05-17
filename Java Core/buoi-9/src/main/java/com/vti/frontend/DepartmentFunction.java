@@ -3,47 +3,67 @@ package com.vti.frontend;
 import com.vti.backend.controller.DepartmentController;
 import com.vti.entity.Department;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class DepartmentFunction {
-    // khoi tao controller
-    DepartmentController departmentController = new DepartmentController();
-    private Scanner sc = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
+    // khoi tao doi tuong controller
+    private DepartmentController departmentController = new DepartmentController();
 
     public void run() {
-        List<Department> departments = new ArrayList<>();
         while (true) {
             System.out.println("=== Mời bạn chọn chức năng ===");
-            System.out.println("1. Xem ds department");
-            System.out.println("2. Thêm mới department");
-            System.out.println("3. Xóa department theo id");
-            System.out.println("4. Update department theo ID");
-            System.out.println("8. Thoát");
-            String choice = sc.nextLine();
+            System.out.println("1. Xem ds phòng ban");
+            System.out.println("2. Thêm mới phòng ban");
+            System.out.println("3. Update phòng ban");
+            System.out.println("4. Xóa phòng ban");
+            System.out.println("5. Tìm kiếm phòng ban");
+            System.out.println("6. Thoát");
+
+            String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    departments = departmentController.findAll();
+                    // lay ds phong ban tu controller
+                    List<Department> departments = departmentController.findAll();
                     this.showDepartment(departments);
                     break;
                 case "2":
                     this.insertDepartment();
                     break;
                 case "3":
-                    this.deleteDepartment();
-                    break;
-                case "4":
                     this.updateDepartment();
                     break;
-                case "8":
-                    return;
+                case "4":
+                    this.deleteDepartment();
+                    break;
                 default:
-                    System.out.println("Nhập sai, nhập lại.");
+                    System.out.println("Chọn sai, chọn lại!");
             }
         }
+    }
 
+    public void deleteDepartment() {
+        System.out.println("Nhập ID phòng ban cần xóa: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        boolean check = departmentController.delete(id);
+        if (check) {
+            System.out.println("Xóa thành công");
+        } else {
+            System.out.println("Xóa không thành công");
+        }
+    }
+
+    public void insertDepartment() {
+        System.out.println("Nhập tên phòng ban: ");
+        String name = scanner.nextLine();
+        boolean check = departmentController.create(name);
+        if (check) {
+            System.out.println("Thêm mới thành công");
+        } else {
+            System.out.println("Thêm không thành công");
+        }
     }
 
     public void showDepartment(List<Department> departments) {
@@ -59,75 +79,18 @@ public class DepartmentFunction {
         System.out.println("+-----+--------------------+");
     }
 
-    public void insertDepartment() {
-        String name;
-        while (true) {
-            boolean check = true;
-            System.out.println("Nhập tên phòng ban: ");
-            name = sc.nextLine();
-            // kiem tra tinh dung dan cua ten phong ban
-            if (Objects.isNull(name) || name.trim().isEmpty()) {//name.isEmpty() check xem đọ dài = 0
-                System.out.println("Ko đc để trống. Nhạp lại tên");
-                check = false;
-            }
-            if (departmentController.checkExistName(name, null)) {// kiem tra xem ten da ton tai chua
-                System.out.println("Tên này đã tồn tại. Nhạp lại tên khác");
-                check = false;
-            }
-            if (check) {
-                break;
-            }
-        }
-        boolean check = departmentController.create(name);
-        if (check) {
-            System.out.println("Thêm mới thành công");
-        } else {
-            System.out.println("Thêm mới thất bại");
-        }
-    }
-
-    public void deleteDepartment() {
-        System.out.println("Nhập ID phòng ban cần xóa: ");
-        int id = sc.nextInt();
-        sc.nextLine();
-        boolean check = departmentController.delete(id);
-        if (check) {
-            System.out.println("Xóa thành công");
-        } else {
-            System.out.println("Xóa thất bại");
-        }
-    }
-
     public void updateDepartment() {
-        System.out.println("Nhập tên ID phòng ban cần sửa: ");
-        int id = sc.nextInt();
-        sc.nextLine();
-        // bắt validation cho id
+        System.out.println("Nhập ID phòng ban cần sửa: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
 
-        String name;
-        while (true) {
-            boolean check = true;
-            System.out.println("Nhập tên phòng ban muốn thay đổi: ");
-            name = sc.nextLine();
-            // kiem tra tinh dung dan cua ten phong ban
-            if (Objects.isNull(name) || name.trim().isEmpty()) {//name.isEmpty() check xem đọ dài = 0
-                System.out.println("Ko đc để trống. Nhạp lại tên");
-                check = false;
-            }
-            if (departmentController.checkExistName(name, id)) {// kiem tra xem ten da ton tai chua
-                System.out.println("Tên này đã tồn tại. Nhạp lại tên khác");
-                check = false;
-            }
-            if (check) {
-                break;
-            }
-        }
-
+        System.out.println("Nhập tên phòng ban cần sửa: ");
+        String name = scanner.nextLine();
         boolean check = departmentController.update(id, name);
         if (check) {
             System.out.println("Update thành công");
         } else {
-            System.out.println("Update thất bại");
+            System.out.println("Update không thành công");
         }
     }
 }
