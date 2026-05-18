@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IAccountRepository {
+    Map<String, Account> mapByUsername();
     List<Account> findAll();
 
     boolean create(String email, String username, String fullName, int departmentID, int positionID);

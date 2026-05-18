@@ -33,7 +33,12 @@ public class DepartmentServiceImpl implements IDepartmentService {
     }
 
     @Override
-    public boolean checkExistName(String name, Integer id) {
-        return departmentRepository.checkExistName(name, id);
+    public boolean checkExistNameAndIdNot(String name, Integer id) {
+        return departmentRepository.checkExistNameAndIdNot(name, id);
+    }
+
+    @Override
+    public boolean checkExistID(Integer id) {
+        return departmentRepository.checkExistID(id);
     }
 }

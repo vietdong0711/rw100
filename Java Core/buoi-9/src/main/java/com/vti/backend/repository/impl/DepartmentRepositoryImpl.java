@@ -99,21 +99,17 @@ public class DepartmentRepositoryImpl implements IDepartmentRepository {
     }
 
     @Override
-    public boolean checkExistName(String name, Integer id) {
+    public boolean checkExistID(Integer id) {
         boolean check = false;
         try {
             // b1: kết nối đến DB
             Connection connection = JDBCUtils.getConnection();
             // b2: lấy dữ liệu từ bảng department
-            String sql = "select * from department where department_name like ? ";
-            if (Objects.nonNull(id)) { //id != null
-                    sql += " and department_id != ? ";
-            }
+            String sql = "select * from department where department_id = ? ";
+
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, name);
-            if (Objects.nonNull(id)) { //id != null
-                preparedStatement.setInt(2, id);
-            }
+            preparedStatement.setInt(1, id);
+
             ResultSet rs = preparedStatement.executeQuery();// thực thi câu lệnh sql và gán bảng trả ra vào ResultSet rs
             if (rs.next()) {// lặp qua qua từng dòng của rs
                 check = true;
@@ -126,8 +122,39 @@ public class DepartmentRepositoryImpl implements IDepartmentRepository {
         return check;
     }
 
-//    public static void main(String[] args) {
-//        DepartmentRepositoryImpl impl = new DepartmentRepositoryImpl();
-//        System.out.println(impl.checkExistName("Tài chính", 5));
-//    }
+
+    @Override
+    public boolean checkExistNameAndIdNot(String name, Integer id) {// neu id null thi tao moi
+        boolean check = false;
+        try {
+            // b1: kết nối đến DB
+            Connection connection = JDBCUtils.getConnection();
+            // b2: lấy dữ liệu từ bảng department
+            String sql = "select * from department where department_name like ? ";
+            if (Objects.nonNull(id)) {// check update
+                sql += "and department_id != ? ";
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            if (Objects.nonNull(id)) {// check update
+                preparedStatement.setInt(2, id);
+            }
+
+            ResultSet rs = preparedStatement.executeQuery();// thực thi câu lệnh sql và gán bảng trả ra vào ResultSet rs
+            if (rs.next()) {// lặp qua qua từng dòng của rs
+                check = true;
+            }
+            // đóng các kết nối
+            JDBCUtils.closeConnection(connection, preparedStatement, rs);
+        } catch (Exception e) {// show các lỗi lien quan đén logic xử lý
+            e.printStackTrace();// show ra exception
+        }
+        return check;
+    }
+
+
+    public static void main(String[] args) {
+        DepartmentRepositoryImpl departmentRepository = new DepartmentRepositoryImpl();
+        System.out.println(departmentRepository.checkExistNameAndIdNot("Sale", 2));
+    }
 }
