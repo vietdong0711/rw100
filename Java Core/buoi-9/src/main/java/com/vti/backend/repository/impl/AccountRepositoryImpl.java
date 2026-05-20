@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class AccountRepositoryImpl implements IAccountRepository {
     // lấy ra các cặp username và account tương ứng
@@ -197,5 +198,123 @@ public class AccountRepositoryImpl implements IAccountRepository {
             e.printStackTrace();
         }
         return mapAccountByUsername;
+    }
+
+//    @Override
+//    public boolean checkUsernameExist(String username) {
+//        boolean checkUsernameExist = false;
+//        try {
+//            // b1: kết nối đến DB
+//            Connection connection = JDBCUtils.getConnection();
+//            // b2: lấy dữ liệu từ bảng account
+//            String sql = "select * from account where username like ?";
+//            PreparedStatement statement = connection.prepareStatement(sql);
+//            statement.setString(1, username);
+//
+//            ResultSet rs = statement.executeQuery();// thực thi câu lệnh sql và gán bảng trả ra vào ResultSet rs
+//            if (rs.next()) {// lặp qua qua từng dòng của rs
+//                checkUsernameExist = true;
+//            }
+//            JDBCUtils.closeConnection(connection, statement, rs);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return checkUsernameExist;
+//    }
+    @Override
+    public boolean checkUsernameExist(String username, Integer id) {
+        boolean checkUsernameExist = false;
+        try {
+            // b1: kết nối đến DB
+            Connection connection = JDBCUtils.getConnection();
+            // b2: lấy dữ liệu từ bảng account
+//            String sql = "select * from account where username like ?";
+//            if (Objects.nonNull(id)) {
+//                sql += " and account_id != ?;";
+//            }
+//            PreparedStatement statement = connection.prepareStatement(sql);
+//            statement.setString(1, username);
+            //if (Objects.nonNull(id)) {
+//                statement.setInt(2, id);
+//            }
+
+            String sql =  "select * from account where username like ? and (account_id != ? or ? is null);";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, username);
+            statement.setInt(2, id);
+            statement.setInt(3, id);
+
+            ResultSet rs = statement.executeQuery();// thực thi câu lệnh sql và gán bảng trả ra vào ResultSet rs
+            if (rs.next()) {// lặp qua qua từng dòng của rs
+                checkUsernameExist = true;
+            }
+            JDBCUtils.closeConnection(connection, statement, rs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return checkUsernameExist;
+    }
+
+    @Override
+    public boolean checkEmailExist(String email) {
+        boolean checkEmailExist = false;
+        try {
+            // b1: kết nối đến DB
+            Connection connection = JDBCUtils.getConnection();
+            // b2: lấy dữ liệu từ bảng account
+            String sql = "select * from account where email like ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+
+            ResultSet rs = statement.executeQuery();// thực thi câu lệnh sql và gán bảng trả ra vào ResultSet rs
+            if (rs.next()) {// lặp qua qua từng dòng của rs
+                checkEmailExist = true;
+            }
+            JDBCUtils.closeConnection(connection, statement, rs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return checkEmailExist;
+    }
+
+    @Override
+    public boolean checkIdExist(Integer id) {
+        boolean checkIdExist = false;
+        try {
+            // b1: kết nối đến DB
+            Connection connection = JDBCUtils.getConnection();
+            // b2: lấy dữ liệu từ bảng account
+            String sql = "select * from account where account_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+
+            ResultSet rs = statement.executeQuery();// thực thi câu lệnh sql và gán bảng trả ra vào ResultSet rs
+            if (rs.next()) {// lặp qua qua từng dòng của rs
+                checkIdExist = true;
+            }
+            JDBCUtils.closeConnection(connection, statement, rs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return checkIdExist;
+    }
+
+    @Override
+    public boolean update(int id, String updateName) {
+        try {
+            // b1: kết nối đến DB
+            Connection connection = JDBCUtils.getConnection();
+            // b2: tiến hành update account
+            String sql = "update account set username = ? where account_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, updateName);
+            preparedStatement.setInt(2, id);
+
+            int c = preparedStatement.executeUpdate();// executeUpdate sẽ trả về 1 số nguyên, đại diện cho số dòng bị thay đổi trong DB
+            return  c > 0;
+        } catch (Exception e) {// show các lỗi lien quan đén logic xử lý
+            e.printStackTrace();// show ra exception
+        }
+        return false;
     }
 }

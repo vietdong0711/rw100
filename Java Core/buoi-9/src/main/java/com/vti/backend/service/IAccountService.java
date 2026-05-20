@@ -15,4 +15,12 @@ public interface IAccountService {
     boolean delete(int id);
 
     Map<String, Account> mapAccountByUsername();
+
+    boolean checkUsernameExist(String username,  Integer id);
+
+    boolean checkEmailExist(String email);
+
+    boolean checkIdExist(Integer id);
+
+    boolean update(int id, String updateName);
 }

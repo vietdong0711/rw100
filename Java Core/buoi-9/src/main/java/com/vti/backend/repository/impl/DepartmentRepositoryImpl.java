@@ -151,10 +151,4 @@ public class DepartmentRepositoryImpl implements IDepartmentRepository {
         }
         return check;
     }
-
-
-    public static void main(String[] args) {
-        DepartmentRepositoryImpl departmentRepository = new DepartmentRepositoryImpl();
-        System.out.println(departmentRepository.checkExistNameAndIdNot("Sale", 2));
-    }
 }
