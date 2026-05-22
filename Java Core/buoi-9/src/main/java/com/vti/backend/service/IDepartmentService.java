@@ -11,4 +11,5 @@ public interface IDepartmentService {
     boolean delete(int id);
     boolean checkExistNameAndIdNot(String name, Integer id);
     boolean checkExistID(Integer id);
+    String importDepartmentFromCSV(String pathName);
 }

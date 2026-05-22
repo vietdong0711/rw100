@@ -11,4 +11,6 @@ public interface IDepartmentRepository {
     boolean delete(int id);
     boolean checkExistID(Integer id);
     boolean checkExistNameAndIdNot(String name, Integer id);
+
+    boolean createListDepartment(List<Department> list);
 }

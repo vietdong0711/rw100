@@ -10,6 +10,7 @@ import com.vti.utils.JDBCUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
@@ -301,12 +302,14 @@ public class AccountRepositoryImpl implements IAccountRepository {
 
     @Override
     public boolean update(int id, String updateName) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
         try {
             // b1: kết nối đến DB
-            Connection connection = JDBCUtils.getConnection();
+            connection = JDBCUtils.getConnection();
             // b2: tiến hành update account
             String sql = "update account set username = ? where account_id = ?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, updateName);
             preparedStatement.setInt(2, id);
 
@@ -314,7 +317,15 @@ public class AccountRepositoryImpl implements IAccountRepository {
             return  c > 0;
         } catch (Exception e) {// show các lỗi lien quan đén logic xử lý
             e.printStackTrace();// show ra exception
+        } finally {
+            //ddosng ket noi
+            JDBCUtils.closeConnection(connection, preparedStatement, null);
         }
         return false;
+    }
+
+
+    public void chia(int a, int b) {
+        System.out.println(a/b);// a= 10   b=0
     }
 }

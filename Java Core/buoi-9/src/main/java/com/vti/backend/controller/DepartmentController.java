@@ -33,4 +33,8 @@ public class DepartmentController {
     public boolean checkExistID(Integer id) {
         return departmentService.checkExistID(id);
     }
+
+    public String importDepartmentFromCSV(String pathName) {//return String: thng báo ra import thanh cong hay that bai
+        return departmentService.importDepartmentFromCSV(pathName);
+    }
 }
