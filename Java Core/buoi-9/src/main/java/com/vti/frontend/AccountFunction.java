@@ -51,11 +51,23 @@ public class AccountFunction {
 
                     break;
                 case "6":
+                    this.importAccountFromCSV();
+                    break;
+                case "7":
                     return;
                 default:
                     System.out.println("Nhập sai, nhập lại.");
             }
         }
+    }
+
+    private void importAccountFromCSV() {
+        System.out.println("=== Import file CSV ===");
+        System.out.println("Mời bạn nhập đường dẫn đến file:");
+        //C:\Users\Admin\Desktop\rw100\csv\input_account.csv
+        String pathName = sc.nextLine();
+        String message = accountController.importAccountFromCSV(pathName);
+        System.out.println(message);
     }
 
     public void showAccount(List<Account> accounts) {
