@@ -324,6 +324,36 @@ public class AccountRepositoryImpl implements IAccountRepository {
         return false;
     }
 
+    @Override
+    public boolean createAccounts(List<Account> accounts) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            // b1: kết nối đến DB
+            connection = JDBCUtils.getConnection();
+            // b2: tiến hành thêm mới account
+            String sql = "INSERT INTO account (email, username, full_name, department_id, position_id)\n" +
+                    "VALUES (?, ?, ?, ?, ?);";
+            preparedStatement = connection.prepareStatement(sql);
+            for (Account account : accounts) {
+                preparedStatement.setString(1, account.getEmail());
+                preparedStatement.setString(2, account.getUsername());
+                preparedStatement.setString(3, account.getFullName());
+                preparedStatement.setInt(4, account.getDepartment().getId());
+                preparedStatement.setInt(5, account.getPosition().getId());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+
+            return  true;
+        } catch (Exception e) {// show các lỗi lien quan đén logic xử lý
+            e.printStackTrace();// show ra exception
+        }  finally {
+            JDBCUtils.closeConnection(connection, preparedStatement, null);
+        }
+        return false;
+    }
+
 
     public void chia(int a, int b) {
         System.out.println(a/b);// a= 10   b=0

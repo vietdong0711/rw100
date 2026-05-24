@@ -25,4 +25,6 @@ public interface IAccountRepository {
     boolean checkIdExist(Integer id);
 
     boolean update(int id, String updateName);
+
+    boolean createAccounts(List<Account> accounts);
 }

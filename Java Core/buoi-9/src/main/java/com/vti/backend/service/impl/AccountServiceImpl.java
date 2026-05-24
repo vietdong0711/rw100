@@ -5,6 +5,7 @@ import com.vti.backend.repository.IDepartmentRepository;
 import com.vti.backend.repository.IPositionRepository;
 import com.vti.backend.repository.impl.AccountRepositoryImpl;
 import com.vti.backend.repository.impl.DepartmentRepositoryImpl;
+import com.vti.backend.repository.impl.PositionRepositoryImpl;
 import com.vti.backend.service.IAccountService;
 import com.vti.entity.Account;
 import com.vti.entity.Department;
@@ -21,7 +22,7 @@ public class AccountServiceImpl implements IAccountService {
     // khoi tao accountRepository
     private IAccountRepository accountRepository = new AccountRepositoryImpl();
     private IDepartmentRepository departmentRepository = new DepartmentRepositoryImpl();
-    private IPositionRepository positionRepository = new AccountRepositoryImpl();
+    private IPositionRepository positionRepository = new PositionRepositoryImpl();
 
 
     @Override
@@ -118,6 +119,6 @@ public class AccountServiceImpl implements IAccountService {
             e.printStackTrace();
         }
 
-        return checkImport && importErrors.isEmpty() ? "Import thành công" : "Import lỗi, đã xuất file ra " + PATH_ERROR;
+        return  "Import thành công";
     }
 }
