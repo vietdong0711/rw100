@@ -8,9 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class DepartmentRepositoryImpl implements IDepartmentRepository {
     // lấy ra toàn bộ department
@@ -82,6 +80,34 @@ public class DepartmentRepositoryImpl implements IDepartmentRepository {
         return false;
     }
 
+    @Override
+    public Map<String, Department> mapByName() {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        //  key       value
+        Map<String, Department> mapByName = new HashMap<>();// lưu lại dữ liệu lấy từ DB
+        try {
+            // b1: kết nối đến DB
+            connection = JDBCUtils.getConnection();
+            // b2: lấy dữ liệu từ bảng department
+            String sql = "select * from department order by department_id asc;";
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sql);// thực thi câu lệnh sql và gán bảng trả ra vào ResultSet rs
+            while (rs.next()) {// lặp qua qua từng dòng của rs
+                int id = rs.getInt("department_id");// lấy giá trị từ cloumn department_id
+                String name = rs.getString("department_name");//lấy giá trị từ cloumn department_name
+
+                Department dep = new Department(id, name);
+                mapByName.put(name, dep);
+            }
+        } catch (Exception e) {// show các lỗi lien quan đén logic xử lý
+            e.printStackTrace();// show ra exception
+        } finally {
+            JDBCUtils.closeConnection(connection, statement, rs);
+        }
+        return mapByName;
+    }
 
 
 //    @Override

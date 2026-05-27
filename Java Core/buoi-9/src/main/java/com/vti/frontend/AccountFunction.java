@@ -29,7 +29,8 @@ public class AccountFunction {
             System.out.println("3. Xóa account theo tên");
             System.out.println("4. Update account theo ID");
             System.out.println("5. Map account by username");
-            System.out.println("6. Thoát");
+            System.out.println("6. Import CSV");
+            System.out.println("7. Thoát");
             String choice = sc.nextLine();
             switch (choice) {
                 case "1":

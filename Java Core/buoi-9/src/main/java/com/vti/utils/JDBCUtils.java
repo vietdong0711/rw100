@@ -6,7 +6,7 @@ public class JDBCUtils {
     public static Connection getConnection() {
         String url = "jdbc:mysql://localhost:3306/rw100_testing_system";
         String username = "root";
-        String password = "root";// mk mysql
+        String password = "dong";// mk mysql
         Connection connection = null;
 
         try {
