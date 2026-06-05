@@ -1,6 +1,7 @@
 package com.vti.frontend;
 
 import com.vti.backend.controller.DepartmentController;
+import com.vti.entity.Account;
 import com.vti.entity.Department;
 
 import java.util.List;

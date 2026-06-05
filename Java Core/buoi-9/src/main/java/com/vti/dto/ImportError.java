@@ -3,23 +3,23 @@ package com.vti.dto;
 import java.util.List;
 
 public class ImportError<T> {
-    private T line;// dữ lieju trong row tren file csv
+    private T csv;// dữ lieju trong row tren file csv
     private List<String> message;// ds loi lien quan
 
     public ImportError() {
     }
 
     public ImportError(T line, List<String> message) {
-        this.line = line;
+        this.csv = line;
         this.message = message;
     }
 
-    public T getLine() {
-        return line;
+    public T getCsv() {
+        return csv;
     }
 
-    public void setLine(T line) {
-        this.line = line;
+    public void setCsv(T csv) {
+        this.csv = csv;
     }
 
     public List<String> getMessage() {

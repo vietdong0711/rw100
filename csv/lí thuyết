@@ -1,0 +1,113 @@
+3layer 
+	controller	giao tiếp vs FE
+	service		xử lý logic  tính toán, validation,...
+	repository	làm việc vs DB
+
+static: những biến hoặc phương thức static là những thành phần động
+		thuộc về class chứ ko phải instance 
+		các biến hoặc phương thức static sẽ được khởi tạo khi run project
+		các biến hoặc phương thức ko phải static thì đc khởi tạo khi tạo instance
+		dùng khi nào? khi mà biến hoặc phương thức được dùng rất nhiều lần
+		VD: getConnection, closeConnection, ....
+
+OOP: lập trình hướng đối tượng
+		- đưa các đối tượng thực tế thành các đối tượng trong code để quản lý
+		- đối tượng: 
+			thuộc tính: các đặc điểm cơ bản của đối tượng
+			phương thức: hành động của đối tượng
+	- tính chất
+	+ đóng gói: các class khác ko thể truy cập trực tiếp đến thuộc tính của class
+		khác mà chỉ có thể truy cập gián tiếp thông qua getter, setter
+		4 phạm vi truy cập
+		nhỏ -> lớn : private, default, protected, public
+		VD: A có đt, B muốn dùng thì phải mượn
+	+ kế thừa: class con kế thừa toàn bộ phương thức, thuộc tính của class cha
+		VD: nhà của cha thì cx là nhà của con
+		mục đích: tránh trùng lặp code
+	+ đa hình: cùng 1 hành động nhưng các class khác nhau sẽ thực hiện theo từng cách khác nhau
+		VD: kêu()  con chó, con ga, con lợn kêu mỗi kiểu
+		overload
+			các phương thức trong cùng 1 class có cùng tê, khác tham số, khác kiểu trả về
+			constructor
+		override
+			trong quan hệ kế thừa class con ghi đè lại phương thức của class cha
+	+ trừu tượng: che dấu đi quá trình xử lý mà chỉ show ra kết quả
+		VD: phỏng vấn qua zoom, thì chỉ biết là mình nói thì ng khsac nghe dc, và ngược lại
+			chứ ko biết zoom xử lý ntn để truyền tín hiệu
+		abstract class
+			- là class, nhưng có thêm phương thức trừu tượng, dùng đc mọi phạm vi truy cập
+			- ko hỗ trợ đa kế thừa
+		interface
+			- ko phải là class, chỉ chứa phương thức trừu tượng, phạm vi truy cập là public
+			- hỗ trợ đa kế thừa
+	
+Exception: ngoại lệ? trong vô số TH thành công sẽ có 1 vài thất bại
+	2 loại
+		check: lỗi mà cảnh báo khi code, 
+			dùng 1 hàm mà hàm đó có throws 1 exception thì mình phải throws hoặc try catch				
+		uncheck: lỗi ko biết trước dc
+			chia cho 0, sai thông tin kết nối DB, nullPointer,...
+Xử lý exception
+	2 loại
+		try catch finally	
+		
+		throws
+
+final: cuối cùng
+	thuộc tính final: ko thay đổi gtri 
+	phương thức final: ko thể ghi đè 
+	class final: ko cho class khác kế thừa nhưng vẫn kế thừa dc class khác
+
+== và equals 
+	== so sánh địa chỉ ô nhớ
+	equals so sánh gtri
+
+i++ và ++i
+	gán và i++ : gán trước, tăng i sau
+	gán và ++i : tăng i trước , gán sau
+
+kiểu dữ liệu
+	nguyên thủy
+		- viết thường chữ cái đầu
+		- lưu ở Stack, so sánh thì dùng == 
+		- default value số 0, boolean false, String char null
+		- ko có method hỗ trợ
+	object
+		- viết hoa chữ cái đầu
+		- lưu ở Heap, so sánh thì dùng equals 
+		- default value: null
+		- có method hỗ trợ
+Statement và PreparedStatement: để đưa câu lệnh sql vào để thực thi
+	Statement: ko đưa dc tham số
+	PreparedStatement: đưa dc tham số
+executeQuery và executeUpdate: thực thi câu lệnh sql
+	executeQuery: chỉ dùng với câu query(select), trả về ResutlSet hứng table trong DB
+	executeUpdate: chỉ dùng với câu modify(insert, update, delete) trả ra số row thay đổi
+	executeBatch: dùng để insert nhiêu cặp value
+
+if else - switch case: câu điều kiện
+	if else: dùng dc so sánh khoảng > a ;<b
+	switch case: so sánh = 
+	
+	dùng dc switch case thì  dùng dc if else
+	dùng dc if else thì chưa chắc đã dùng dc switch case
+for foreach
+	for  lặp theo vị trí (i viết tắt của index) 
+	foreach lặp theo đối tượng 
+
+for while
+	for lặp với số lần biết trước
+	while lặp với số lần chưa biết trước
+
+while - do while
+	while: check dkien rồi mới thực hiện
+	do while: thực hiện 1 lần rồi mới check dkien
+
+break: dừng vòng lặp
+continue: bỏ qua lần lặp đó và chuyển qua lần lặp tiếp theo
+return: dừng luôn method chứa vòng lặp đó
+
+List - Set
+	List: lưu trùng dc
+	Set: lưu lưu trùng dc
+Map<K,V> các cặp Key Value , key là duy nhất
