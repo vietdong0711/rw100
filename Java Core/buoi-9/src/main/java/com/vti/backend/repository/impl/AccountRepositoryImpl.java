@@ -12,12 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class AccountRepositoryImpl implements IAccountRepository {
     // lấy ra các cặp username và account tương ứng
@@ -345,6 +340,7 @@ public class AccountRepositoryImpl implements IAccountRepository {
         try {
             // b1: kết nối đến DB
             connection = JDBCUtils.getConnection();
+            connection.setAutoCommit(false);
             // b2: tiến hành update account
             String sql = "update account set username = ? where account_id = ?;";
             preparedStatement = connection.prepareStatement(sql);
@@ -352,6 +348,7 @@ public class AccountRepositoryImpl implements IAccountRepository {
             preparedStatement.setInt(2, id);
 
             int c = preparedStatement.executeUpdate();// executeUpdate sẽ trả về 1 số nguyên, đại diện cho số dòng bị thay đổi trong DB
+            connection.commit();
             return  c > 0;
         } catch (Exception e) {// show các lỗi lien quan đén logic xử lý
             e.printStackTrace();// show ra exception
@@ -390,6 +387,10 @@ public class AccountRepositoryImpl implements IAccountRepository {
             JDBCUtils.closeConnection(connection, preparedStatement, null);
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(UUID.randomUUID());
     }
 
 

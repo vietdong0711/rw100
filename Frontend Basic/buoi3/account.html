@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+
+        <!-- Latest compiled and minified CSS & JS -->
+        <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+        <script src="//code.jquery.com/jquery.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>FullName</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBoby"></tbody>
+            </table>
+        </div>
+    </body>
+    <script>
+        $.ajax({
+            type: "GET",
+            url: "https://6289b2b1e5e5a9ad321bfaab.mockapi.io/Account",
+            dataType: "JSON",
+            success: function (response) {
+                console.log(response);
+                console.log(response.content);
+                var accounts = [];
+                accounts = response;
+
+                var tableContent = "";
+                for (let i = 0; i < response.length; i++) {
+                    tableContent += "<tr>";
+                    tableContent += "<td>" + accounts[i].id + "</td>";
+                    tableContent += "<td>" + accounts[i].email + "</td>";
+                    tableContent += "<td>" + accounts[i].fullname + "</td>";
+                    tableContent += "<td>" + accounts[i].department + "</td>";
+                    tableContent +=
+                        "<td><button onclick='onHandleUpdate(" +
+                        accounts[i].id +
+                        ")'>Edit</button> " +
+                        " <button onclick='onDelete(" +
+                        accounts[i].id +
+                        ")'>Delete</button></td>";
+                    tableContent += "</tr>";
+                }
+                $("#tableBoby").append(tableContent);
+            },
+        });
+    </script>
+</html>
