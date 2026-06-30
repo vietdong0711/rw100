@@ -1,6 +1,26 @@
 var accounts = []; // mảng chứa account
 var v_idUpdate = -1;
+var vTheme = '';
+
 loadData();
+// load màu nên ở localStorage
+vTheme = localStorage.getItem("theme");
+changeTheme(vTheme);
+
+// document.getElementById('modal-id').addEventListener('hidden.bs.modal', function name() {
+    
+// }) 
+
+function changeTheme(themeValue) {
+    if(themeValue === 'dark') {
+        // thêm class .dark-theme vào body
+        $("body").addClass("dark-theme");
+    } else {
+        $("body").removeClass("dark-theme");
+    }
+    localStorage.setItem('theme', themeValue)
+}
+
 
 function loadData() {
     // call api đến mockapi.io đe lấy ds account
@@ -62,9 +82,7 @@ function onDelete(idDelete) {
     }
 }
 
-// jqSubmit
-$("#accountForm").submit(function (e) {
-    e.preventDefault();
+function onCreate(idDelete) {
     if (v_idUpdate > 0) {
         alert("Đang update, ko thể tạo mới dc");
         return;
@@ -98,14 +116,43 @@ $("#accountForm").submit(function (e) {
             $("#inputUsername").val("");
             $("#inputFullname").val("");
             $("#inputAge").val("");
+            $('#modal-id').modal('hide');
         },
         error: function (error) {
             alert("Call api thêm mới thất bại");
         },
     });
+};
+
+// jqSubmit
+// $("#accountForm").submit(function (e) {
+//     e.preventDefault();
+    
+// });
+
+$("#submit").click(function (e) { 
+    // nếu v_idUpdate <= 0    thì sẽ tạo mới
+    // nếu v_idUpdate > 0 thì sẽ update
+    if (v_idUpdate <=0) {
+        onCreate();
+    } else {
+        onUpdate();
+    }
 });
 
+function resetForm() {
+    $(".modal-title").empty();
+    $(".modal-title").append("<div>Create Account</div>");
+    $("#inputAvatar").val("");
+    $("#inputUsername").val("");
+    $("#inputFullname").val("");
+    $("#inputAge").val("");
+    v_idUpdate = -1;
+}
+
 function onHandleEdit(idUpdate) {
+    // mo modal 
+    $('#modal-id').modal('show');
     // call api get by id đẻ lấy lấy dữ liệu ra để hiển thị lên các ô input
     $.ajax({
         type: "GET",
@@ -113,6 +160,8 @@ function onHandleEdit(idUpdate) {
         // data: "data",
         dataType: "JSON",
         success: function (response) {
+            $(".modal-title").empty();
+            $(".modal-title").append("<div>Update Account</div>");
             // hien thi ra cac o input tuong ung
             $("#inputAvatar").val(response.avatar);
             $("#inputUsername").val(response.username);
@@ -124,16 +173,9 @@ function onHandleEdit(idUpdate) {
             alert("Call api lấy thông tin thất bại");
         },
     });
-    $.ajax({
-        type: "method",
-        url: "url",
-        data: "data",
-        dataType: "dataType",
-        success: function (response) {},
-    });
 }
 
-$("#btnUpdate").click(function (e) {
+function onUpdate(idDelete) {
     var v_avatar = $("#inputAvatar").val();
     var v_username = $("#inputUsername").val();
     var v_fullName = $("#inputFullname").val();
@@ -161,9 +203,12 @@ $("#btnUpdate").click(function (e) {
             $("#inputUsername").val("");
             $("#inputFullname").val("");
             $("#inputAge").val("");
+            $('#modal-id').modal('hide');
         },
         error: function (error) {
             alert("Call api update thất bại");
         },
     });
-});
+};
+
+
