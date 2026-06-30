@@ -3,6 +3,23 @@ package com.vti.utils;
 import java.sql.*;
 
 public class JDBCUtils {
+    public static Connection con;
+
+    static {
+        String url = "jdbc:mysql://localhost:3306/rw100_testing_system";
+        String username = "root";
+        String password = "dong";// mk mysql
+        try {
+            // b1: kết nối đến DB
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(url, username, password);
+        } catch (Exception e) {
+            System.out.println("Kết nối DB ko thành công");
+            e.printStackTrace();
+        }
+    }
+
+
     public static Connection getConnection() {
         String url = "jdbc:mysql://localhost:3306/rw100_testing_system";
         String username = "root";
