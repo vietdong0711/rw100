@@ -6,9 +6,9 @@
 <hibernate-configuration>
     <session-factory>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/rw100_testing_system</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/rw100_demo</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">dong</property>
+        <property name="connection.password">root</property>
 
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 
@@ -19,10 +19,15 @@
         <property name="format_sql">true</property>
         <property name="highlight_sql">true</property>
 
-<!--        <property name="hbm2ddl.auto">update</property>-->
+<!--        tạo các bảng hoặc các column đang thiếu so với sql-->
+        <property name="hbm2ddl.auto">update</property>
 
 <!--        khai báo cho hibernate biết các class nào đang được mapping-->
         <mapping class="com.vti.entity.Department" />
+        <mapping class="com.vti.entity.Account" />
+        <mapping class="com.vti.entity.Group" />
+        <mapping class="com.vti.entity.GroupAccount" />
+        <mapping class="com.vti.entity.Position" />
 
     </session-factory>
 </hibernate-configuration>

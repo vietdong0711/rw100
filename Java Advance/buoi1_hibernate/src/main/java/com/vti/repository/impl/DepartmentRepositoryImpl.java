@@ -18,7 +18,7 @@ public class DepartmentRepositoryImpl implements IDepartmentRepository {
         List<Department> departments = new ArrayList<>();
         Session session = sessionFactory.openSession();
         try {
-            String hql = "From Department";
+            String hql = "From Department";// gọi đén class chứ ko phải table ở sql
             Query<Department> query = session.createQuery(hql, Department.class);
             departments = query.list();// lay ds
         } finally {
@@ -64,7 +64,7 @@ public class DepartmentRepositoryImpl implements IDepartmentRepository {
 
     @Override
     public void update(String updateName, Integer id) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();// Connection JDBC
         session.beginTransaction();
         try {
             // tifm ra department caafn update
