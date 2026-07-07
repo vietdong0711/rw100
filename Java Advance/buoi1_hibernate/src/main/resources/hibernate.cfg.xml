@@ -19,7 +19,7 @@
         <property name="format_sql">true</property>
         <property name="highlight_sql">true</property>
 
-<!--        tạo các bảng hoặc các column đang thiếu so với sql-->
+    <!--        tạo các bảng hoặc các column đang thiếu so với sql-->
         <property name="hbm2ddl.auto">update</property>
 
 <!--        khai báo cho hibernate biết các class nào đang được mapping-->
