@@ -24,7 +24,7 @@ public class DepartmentServiceImpl implements IDepartmentService {
 
     @Override
     public Department findById(Integer id) {
-        Department department = departmentRepository.findById(id).orElse(null);
+        Department department = departmentRepository.findById(id).get();
         //orElse(null)   : nếu optional ko có gtrri thì sẽ gán luôn = gtri null
         // DB   Ko có id 20,   coos tình tìm id = 20
         return department;
@@ -37,6 +37,10 @@ public class DepartmentServiceImpl implements IDepartmentService {
 
     @Override
     public void create(Department department) {
+        // kiem tra xem ten đa tồn tại chưa
+        if (departmentRepository.existsByNameAndIdNot(department.getName(), null)) {//where name = ?
+            throw new RuntimeException("Department already exists");
+        }
         departmentRepository.save(department);
     }
 
@@ -47,9 +51,18 @@ public class DepartmentServiceImpl implements IDepartmentService {
         if (Objects.isNull(departmentUpdate)) {
             throw new RuntimeException("ID not found!");
         } else {
+            if (departmentRepository.existsByNameAndIdNot(department.getName(), id)) {// where name = ? and id !=
+                throw new RuntimeException("Department already exists");
+            }
+
             // lưu lại thông tin update
             departmentUpdate.setName(department.getName());
             departmentRepository.save(departmentUpdate);
         }
+    }
+
+    @Override
+    public Department findByName(String name) {
+        return departmentRepository.findByName(name);
     }
 }

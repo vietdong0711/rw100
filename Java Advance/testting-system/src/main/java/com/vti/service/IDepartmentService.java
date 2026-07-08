@@ -14,4 +14,6 @@ public interface IDepartmentService {
     void create(Department department);
 
     void update(Department department, Integer id);
+
+    Department findByName(String name);
 }
