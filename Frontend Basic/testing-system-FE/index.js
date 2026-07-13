@@ -26,11 +26,20 @@ function changeTheme(themeValue) {
 }
 
 function loadData() {
+    // lấy ra các gtri cần tìm kiếm
+    var usernameSearch = $("#usernameSearch").val();
+    var fullNameSearch = $("#fullNameSearch").val();
+    var emailSearch = $("#emailSearch").val();
+    var departmentIdSearch = $("#deparmentSearchID").val();
+    var positionIdSearch = $("#positionSearchID").val();
+
+    var subUrl = `?username=${usernameSearch}&departmentId=${departmentIdSearch}&fullName=${fullNameSearch}&email=${emailSearch}&positionId=${positionIdSearch}`;
+
     // call api đến mockapi.io đe lấy ds account
     // jqAjax
     $.ajax({
         type: "GET",
-        url: baseUrl,
+        url: baseUrl + subUrl,
         dataType: "JSON",
         success: function (response) {
             // call api thanh cong
@@ -245,6 +254,10 @@ function loadDepartment() {
             }
             $("#inputDepartmentName").empty();
             $("#inputDepartmentName").append(content);
+            // load cho ô tìm kiếm
+            $("#deparmentSearchID").empty();
+            $("#deparmentSearchID").append("<option value=''>Tất cả</option>");
+            $("#deparmentSearchID").append(content);
         },
         error: function (error) {
             alert("Call api get department thất bại");
@@ -266,6 +279,10 @@ function loadPosition() {
             }
             $("#inputPositionName").empty();
             $("#inputPositionName").append(content);
+            // load cho ô tìm kiếm
+            $("#positionSearchID").empty();
+            $("#positionSearchID").append("<option value=''>Tất cả</option>");
+            $("#positionSearchID").append(content);
         },
         error: function (error) {
             alert("Call api get position thất bại");
