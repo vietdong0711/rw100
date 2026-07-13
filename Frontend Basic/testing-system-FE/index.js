@@ -45,6 +45,7 @@ function loadData() {
                     " style='height: 50px' alt='Image' /></td>";
                 tableContent += "<td>" + accounts[i].username + "</td>";
                 tableContent += "<td>" + accounts[i].fullName + "</td>";
+                tableContent += "<td>" + accounts[i].email + "</td>";
                 tableContent += "<td>" + accounts[i].departmentName + "</td>";
                 tableContent += "<td>" + accounts[i].positionName + "</td>";
                 tableContent +=
