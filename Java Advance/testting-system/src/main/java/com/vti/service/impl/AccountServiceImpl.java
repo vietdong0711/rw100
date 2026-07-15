@@ -159,4 +159,10 @@ public class AccountServiceImpl implements IAccountService {
 
         accountRepository.save(accountUpdate);
     }
+
+    @Override
+    public AccountDTO findByUsername(String username) {
+        Account account = accountRepository.seByUsername(username);
+        return modelMapper.map(account, AccountDTO.class);
+    }
 }

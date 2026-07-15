@@ -4,8 +4,8 @@ var vTheme = "";
 var baseUrl = "http://localhost:8080/api/v1/accounts";
 var baseUrlDepartment = "http://localhost:8080/api/v1/departments";
 var baseUrlPosition = "http://localhost:8080/api/v1/positions";
-var baseAvt =
-    "https://images2.thanhnien.vn/528068263637045248/2024/1/25/e093e9cfc9027d6a142358d24d2ee350-65a11ac2af785880-17061562929701875684912.jpg";
+var baseAvt = "https://images2.thanhnien.vn/528068263637045248/2024/1/25/e093e9cfc9027d6a142358d24d2ee350-65a11ac2af785880-17061562929701875684912.jpg";
+var pageNumber = 0;
 
 loadData(); // load ra ds account
 loadDepartment();
@@ -24,6 +24,15 @@ function changeTheme(themeValue) {
     }
     localStorage.setItem("theme", themeValue);
 }
+function changePage(i) {
+    pageNumber = i;
+    loadData();
+}
+
+function changeSize() {
+    pageNumber = 0;
+    loadData();
+}
 
 function loadData() {
     // lấy ra các gtri cần tìm kiếm
@@ -33,8 +42,10 @@ function loadData() {
     var departmentIdSearch = $("#deparmentSearchID").val();
     var positionIdSearch = $("#positionSearchID").val();
 
-    var subUrl = `?username=${usernameSearch}&departmentId=${departmentIdSearch}&fullName=${fullNameSearch}&email=${emailSearch}&positionId=${positionIdSearch}`;
+    // lấy ra các gtri lien quan đến phân trang
+    var size = $("#numberOfRecordId").val();
 
+    var subUrl = `?username=${usernameSearch}&departmentId=${departmentIdSearch}&fullName=${fullNameSearch}&email=${emailSearch}&positionId=${positionIdSearch}&size=${size}&sort=id,desc&page=${pageNumber}`;
     // call api đến mockapi.io đe lấy ds account
     // jqAjax
     $.ajax({
@@ -43,15 +54,12 @@ function loadData() {
         dataType: "JSON",
         success: function (response) {
             // call api thanh cong
-            accounts = response;
+            accounts = response.content;
             var tableContent = "";
             for (let i = 0; i < accounts.length; i++) {
                 tableContent += "<tr>";
                 tableContent += "<td>" + accounts[i].id + "</td>";
-                tableContent +=
-                    "<td><img src=" +
-                    baseAvt +
-                    " style='height: 50px' alt='Image' /></td>";
+                tableContent += "<td><img src=" + baseAvt + " style='height: 50px' alt='Image' /></td>";
                 tableContent += "<td>" + accounts[i].username + "</td>";
                 tableContent += "<td>" + accounts[i].fullName + "</td>";
                 tableContent += "<td>" + accounts[i].email + "</td>";
@@ -66,18 +74,41 @@ function loadData() {
                     ")'>Delete</button></td>";
                 tableContent += "</tr>";
             }
-            //         {
-            //     "id": 1,
-            //     "username": "annguyen1",
-            //     "fullName": "Nguyễn Văn An",
-            //     "departmentName": "Marketing",
-            //     "positionName": "DEV"
-            // },
             // trước khi show data thì clear bảng trước
             //jqEmpty
             $("#tableBoby").empty();
             // jqAppend
             $("#tableBoby").append(tableContent);
+
+            // hiển thị thông tin paging  pagingId
+            $("#pagingId").empty();
+            // if (response.first) {
+            //     $("#pagingId").append(`<li class="disabled"><a href="#" aria-disabled="true">&laquo;</a></li>`); // <<
+            // } else {
+            //     $("#pagingId").append(`<li><a href="#" onclick="changePage(${pageNumber - 1})">&laquo;</a></li>`); // <<
+            // }
+
+            $("#pagingId").append(
+                `<li ${response.first == true ? `class="disabled"` : ``} ><a href="#" ${response.first == true ? `aria-disabled="true"` : `onclick="changePage(${pageNumber - 1})"`} >&laquo;</a></li>`,
+            ); // <<
+
+            // load các trang tương ứng ra
+            var totalPage = response.totalPages;
+            for (let i = 0; i < totalPage; i++) {
+                if (i == pageNumber) {
+                    $("#pagingId").append(`<li><a href="#" style="background-color: #4a90e2">${i + 1}</a></li>`);
+                } else {
+                    $("#pagingId").append(`<li><a href="#" onclick="changePage(${i})" >${i + 1}</a></li>`);
+                }
+            }
+            // if (response.last) {
+            //     $("#pagingId").append(`<li class="disabled"><a href="#" aria-disabled="true">&raquo;</a></li>`); // >>
+            // } else {
+            //     $("#pagingId").append(`<li><a href="#" onclick="changePage(${pageNumber + 1})">&raquo;</a></li>`); // >>
+            // }
+            $("#pagingId").append(
+                `<li ${response.last == true ? `class="disabled"` : ``} ><a href="#" ${response.last == true ? `aria-disabled="true"` : `onclick="changePage(${pageNumber + 1})"`} >&raquo;</a></li>`,
+            ); // <<
         },
         error: function (error) {
             alert("Call api get accounts thất bại");

@@ -1,4 +1,5 @@
 package com.vti.entity;
 
-public class CanBo {
+public class CanBo extends Account {
+
 }

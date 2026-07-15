@@ -34,15 +34,7 @@ public class Account {
         this.createDate = new Date();
     }
 
-    public Account(int id, String username, String fullName, String email, Department department, Position position, Date createDate) {
-        this.id = id;
-        this.username = username;
-        this.fullName = fullName;
-        this.email = email;
-        this.department = department;
-        this.position = position;
-        this.createDate = createDate;
-    }
+
 
     public int getId() {
         return id;
@@ -98,5 +90,9 @@ public class Account {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public void an() {
+        System.out.println("account đang ăn");
     }
 }
