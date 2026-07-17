@@ -4,6 +4,7 @@ import com.vti.dto.AccountDTO;
 import com.vti.entity.Account;
 import com.vti.entity.Department;
 import com.vti.entity.Position;
+import com.vti.exception.BusinessException;
 import com.vti.form.AccountCreateOrUpdateForm;
 import com.vti.form.AccountSearchForm;
 import com.vti.repository.IAccountRepository;
@@ -11,6 +12,7 @@ import com.vti.repository.IDepartmentRepository;
 import com.vti.repository.IPositionRepository;
 import com.vti.service.IAccountService;
 import com.vti.specification.AccountCustomSpecification;
+import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,54 +76,33 @@ public class AccountServiceImpl implements IAccountService {
     public AccountDTO findById(Integer id) {
         Account account = accountRepository.findById(id).orElse(null);
         AccountDTO dto = null;
-        if (Objects.nonNull(account)) {
-            dto = modelMapper.map(account, AccountDTO.class);
-        }
+//        if (Objects.nonNull(account)) {
+//            dto = modelMapper.map(account, AccountDTO.class);
+//        }
+        dto = modelMapper.map(account, AccountDTO.class);
         return dto;
     }
 
     @Override
+    @Transactional
     public void deleteById(Integer id) {
         accountRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public void create(AccountCreateOrUpdateForm form) {
-//        // tìm department theo depId
-////        Department department = departmentRepository.findById(account.getDepartment().getId()).orElse(null);
-////        if (Objects.isNull(department)) {
-////            throw new RuntimeException("Department not found");
-////        }
-//        Department department = departmentRepository.findById(account.getDepartment().getId())
-//                .orElseThrow(() -> new RuntimeException("Department not found"));
-//
-//        // tìm position theo poID
-////        Position position = positionRepository.findById(account.getPosition().getId()).orElse(null);
-////        if (Objects.isNull(position)) {
-////            throw new RuntimeException("Position not found");
-////        }
-//        Position position = positionRepository.findById(account.getPosition().getId())
-//                .orElseThrow(() -> new RuntimeException("Position not found"));
-//
-//        if (accountRepository.existsByUsernameAndIdNot(account.getUsername(), null)) {
-//            throw new RuntimeException("Username exists");
-//        }
-//        if (accountRepository.existsByEmailAndIdNot(account.getEmail(), null)) {
-//            throw new RuntimeException("Email exists");
-//        }
-//        accountRepository.save(account);
-        // chuyển form -> account
         // validation dữ liệu
         if (accountRepository.existsByUsernameAndIdNot(form.getUsername(), null)) {
-            throw new RuntimeException("Username exists");
+            throw BusinessException.builder().message("Username đã tồn tại!").build();
         }
         if (accountRepository.existsByEmailAndIdNot(form.getEmail(), null)) {
-            throw new RuntimeException("Email exists");
+            throw BusinessException.builder().message("Email đã tồn tại!").build();
         }
         Department department = departmentRepository.findById(form.getDepartmentId())
-                .orElseThrow(() -> new RuntimeException("Department not found"));
+                .orElseThrow(() -> BusinessException.builder().message("Department không tồn tại").build());
         Position position = positionRepository.findById(form.getPositionId())
-                .orElseThrow(() -> new RuntimeException("Position not found"));
+                .orElseThrow(() -> BusinessException.builder().message("Position not found").build());
         // lưu
         Account account = new Account();
         account.setUsername(form.getUsername());
@@ -136,19 +117,19 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public void update(AccountCreateOrUpdateForm form, Integer id) {
         Account accountUpdate = accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> BusinessException.builder().message("Account không tồn tại").build());
 
         /// validation dữ liệu
         if (accountRepository.existsByUsernameAndIdNot(form.getUsername(), id)) {
-            throw new RuntimeException("Username exists");
+            throw BusinessException.builder().message("Username đã tồn tại!").build();
         }
         if (accountRepository.existsByEmailAndIdNot(form.getEmail(), id)) {
-            throw new RuntimeException("Email exists");
+            throw BusinessException.builder().message("Email đã tồn tại!").build();
         }
         Department department = departmentRepository.findById(form.getDepartmentId())
-                .orElseThrow(() -> new RuntimeException("Department not found"));
+                .orElseThrow(() -> BusinessException.builder().message("Department không tồn tại").build());
         Position position = positionRepository.findById(form.getPositionId())
-                .orElseThrow(() -> new RuntimeException("Position not found"));
+                .orElseThrow(() -> BusinessException.builder().message("Position not found").build());
 
         // luu lại
         accountUpdate.setUsername(form.getUsername());

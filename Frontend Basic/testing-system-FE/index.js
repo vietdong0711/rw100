@@ -133,49 +133,53 @@ function onDelete(idDelete) {
     }
 }
 
-function onCreate(idDelete) {
-    if (v_idUpdate > 0) {
-        alert("Đang update, ko thể tạo mới dc");
+function onCreate() {
+    if (!validationUsername() || !validationFullname() || !validationEmail()) {
         return;
-    }
-    var v_avatar = $("#inputAvatar").val();
-    var v_username = $("#inputUsername").val();
-    var v_fullName = $("#inputFullname").val();
-    var v_email = $("#inputEmail").val();
-    var v_departmentID = $("#inputDepartmentName").val();
-    var v_positionID = $("#inputPositionName").val();
+    } else {
+        if (v_idUpdate > 0) {
+            alert("Đang update, ko thể tạo mới dc");
+            return;
+        }
+        var v_avatar = $("#inputAvatar").val();
+        var v_username = $("#inputUsername").val();
+        var v_fullName = $("#inputFullname").val();
+        var v_email = $("#inputEmail").val();
+        var v_departmentID = $("#inputDepartmentName").val();
+        var v_positionID = $("#inputPositionName").val();
 
-    // đưa các dữ liệu trên vào object // object của js
-    var account = {
-        username: v_username,
-        fullName: v_fullName,
-        email: v_email,
-        departmentId: v_departmentID,
-        positionId: v_positionID,
-    };
-    //https://images2.thanhnien.vn/528068263637045248/2024/1/25/e093e9cfc9027d6a142358d24d2ee350-65a11ac2af785880-17061562929701875684912.jpg
-    // call api dể thêm mới account
-    $.ajax({
-        type: "POST",
-        url: baseUrl,
-        data: JSON.stringify(account), // chuyển account từ obejct của JS thành JSON
-        contentType: "application/json",
-        success: function (response) {
-            alert("Thêm dữ liệu thành công");
-            // hiển thị lại ds account
-            loadData();
-            // clear dữ lieu 3 ô username, fullName, age ở tren
-            //jqValSet
-            $("#inputAvatar").val("");
-            $("#inputUsername").val("");
-            $("#inputFullname").val("");
-            $("#inputEmail").val("");
-            $("#modal-id").modal("hide");
-        },
-        error: function (error) {
-            alert("Call api thêm mới thất bại");
-        },
-    });
+        // đưa các dữ liệu trên vào object // object của js
+        var account = {
+            username: v_username,
+            fullName: v_fullName,
+            email: v_email,
+            departmentId: v_departmentID,
+            positionId: v_positionID,
+        };
+        //https://images2.thanhnien.vn/528068263637045248/2024/1/25/e093e9cfc9027d6a142358d24d2ee350-65a11ac2af785880-17061562929701875684912.jpg
+        // call api dể thêm mới account
+        $.ajax({
+            type: "POST",
+            url: baseUrl,
+            data: JSON.stringify(account), // chuyển account từ obejct của JS thành JSON
+            contentType: "application/json",
+            success: function (response) {
+                alert("Thêm dữ liệu thành công");
+                // hiển thị lại ds account
+                loadData();
+                // clear dữ lieu 3 ô username, fullName, age ở tren
+                //jqValSet
+                $("#inputAvatar").val("");
+                $("#inputUsername").val("");
+                $("#inputFullname").val("");
+                $("#inputEmail").val("");
+                $("#modal-id").modal("hide");
+            },
+            error: function (error) {
+                alert(error.responseJSON.message);
+            },
+        });
+    }
 }
 
 // jqSubmit
@@ -200,7 +204,7 @@ function resetForm() {
     $("#inputAvatar").val("");
     $("#inputUsername").val("");
     $("#inputFullname").val("");
-    $("#inputAge").val("");
+    $("#inputEmail").val("");
     v_idUpdate = -1;
 }
 
@@ -319,4 +323,56 @@ function loadPosition() {
             alert("Call api get position thất bại");
         },
     });
+}
+
+function validationUsername() {
+    $("#usernameDangerId").empty();
+    var v_username = $("#inputUsername").val();
+    if (v_username.trim() == "") {
+        $("#usernameDangerId").append("Username không được để trống");
+        return false;
+    }
+    if (v_username.length > 100) {
+        $("#usernameDangerId").append("Username không dài quá 100 kí tự");
+        return false;
+    }
+
+    return true;
+}
+
+function validationFullname() {
+    $("#fullNameDangerId").empty();
+    var v_fullname = $("#inputFullname").val();
+    if (v_fullname.trim() == "") {
+        $("#fullNameDangerId").append("Fullname không được để trống");
+        return false;
+    }
+    if (v_fullname.length > 100) {
+        $("#fullNameDangerId").append("Fullname không dài quá 100 kí tự");
+        return false;
+    }
+
+    return true;
+}
+
+function validationEmail() {
+    $("#emailDangerId").empty();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var v_email = $("#inputEmail").val();
+    if (v_email.trim() == "") {
+        $("#emailDangerId").append("Email không được để trống");
+        return false;
+    }
+
+    if (!regex.test(v_email)) {
+        $("#emailDangerId").append("Email không đúng định dạng");
+        return false;
+    }
+
+    if (v_email.length > 100) {
+        $("#emailDangerId").append("Email không dài quá 100 kí tự");
+        return false;
+    }
+
+    return true;
 }
