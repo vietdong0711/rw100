@@ -4,7 +4,8 @@ var vTheme = "";
 var baseUrl = "http://localhost:8080/api/v1/accounts";
 var baseUrlDepartment = "http://localhost:8080/api/v1/departments";
 var baseUrlPosition = "http://localhost:8080/api/v1/positions";
-var baseAvt = "https://images2.thanhnien.vn/528068263637045248/2024/1/25/e093e9cfc9027d6a142358d24d2ee350-65a11ac2af785880-17061562929701875684912.jpg";
+var baseAvt =
+    "https://images2.thanhnien.vn/528068263637045248/2024/1/25/e093e9cfc9027d6a142358d24d2ee350-65a11ac2af785880-17061562929701875684912.jpg";
 var pageNumber = 0;
 var emailRules = {
     name: "Email",
@@ -22,6 +23,9 @@ var fullnameRules = {
     required: true,
     length: 100,
 };
+var loginInfor = JSON.parse(localStorage.getItem("loginInfor"));
+
+console.log("loginInfor: " + loginInfor);
 
 loadData(); // load ra ds account
 loadDepartment();
@@ -68,6 +72,16 @@ function loadData() {
         type: "GET",
         url: baseUrl + subUrl,
         dataType: "JSON",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(
+                "Authorization",
+                "Basic " +
+                    btoa(`${loginInfor.username}:${loginInfor.password}`),
+            );
+        },
+        headers: {
+            Authorization: "Basic " + btoa("admin:123456"),
+        },
         success: function (response) {
             // call api thanh cong
             accounts = response.content;
@@ -75,7 +89,10 @@ function loadData() {
             for (let i = 0; i < accounts.length; i++) {
                 tableContent += "<tr>";
                 tableContent += "<td>" + accounts[i].id + "</td>";
-                tableContent += "<td><img src=" + baseAvt + " style='height: 50px' alt='Image' /></td>";
+                tableContent +=
+                    "<td><img src=" +
+                    baseAvt +
+                    " style='height: 50px' alt='Image' /></td>";
                 tableContent += "<td>" + accounts[i].username + "</td>";
                 tableContent += "<td>" + accounts[i].fullName + "</td>";
                 tableContent += "<td>" + accounts[i].email + "</td>";
@@ -112,9 +129,13 @@ function loadData() {
             var totalPage = response.totalPages;
             for (let i = 0; i < totalPage; i++) {
                 if (i == pageNumber) {
-                    $("#pagingId").append(`<li><a href="#" style="background-color: #4a90e2">${i + 1}</a></li>`);
+                    $("#pagingId").append(
+                        `<li><a href="#" style="background-color: #4a90e2">${i + 1}</a></li>`,
+                    );
                 } else {
-                    $("#pagingId").append(`<li><a href="#" onclick="changePage(${i})" >${i + 1}</a></li>`);
+                    $("#pagingId").append(
+                        `<li><a href="#" onclick="changePage(${i})" >${i + 1}</a></li>`,
+                    );
                 }
             }
             // if (response.last) {
@@ -138,6 +159,13 @@ function onDelete(idDelete) {
         $.ajax({
             type: "DELETE",
             url: baseUrl + "/" + idDelete,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(
+                    "Authorization",
+                    "Basic " +
+                        btoa(`${loginInfor.username}:${loginInfor.password}`),
+                );
+            },
             success: function (response) {
                 alert("Xóa thành công!");
                 loadData();
@@ -183,6 +211,13 @@ function onCreate() {
             url: baseUrl,
             data: JSON.stringify(account), // chuyển account từ obejct của JS thành JSON
             contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(
+                    "Authorization",
+                    "Basic " +
+                        btoa(`${loginInfor.username}:${loginInfor.password}`),
+                );
+            },
             success: function (response) {
                 alert("Thêm dữ liệu thành công");
                 // hiển thị lại ds account
@@ -226,6 +261,13 @@ function onHandleEdit(idUpdate) {
         type: "GET",
         url: baseUrl + "/" + idUpdate,
         dataType: "JSON",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(
+                "Authorization",
+                "Basic " +
+                    btoa(`${loginInfor.username}:${loginInfor.password}`),
+            );
+        },
         success: function (response) {
             $(".modal-title").empty();
             $(".modal-title").append("<div>Update Account</div>");
@@ -273,6 +315,13 @@ function onUpdate(idDelete) {
             url: baseUrl + "/" + v_idUpdate,
             data: JSON.stringify(accountUpdate),
             contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(
+                    "Authorization",
+                    "Basic " +
+                        btoa(`${loginInfor.username}:${loginInfor.password}`),
+                );
+            },
             success: function (response) {
                 alert("Update dữ liệu thành công");
                 // hiển thi ls account
@@ -294,6 +343,13 @@ function loadDepartment() {
         type: "GET",
         url: baseUrlDepartment,
         dataType: "JSON",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(
+                "Authorization",
+                "Basic " +
+                    btoa(`${loginInfor.username}:${loginInfor.password}`),
+            );
+        },
         success: function (response) {
             //
             var content = "";
@@ -319,6 +375,13 @@ function loadPosition() {
         type: "GET",
         url: baseUrlPosition,
         dataType: "JSON",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(
+                "Authorization",
+                "Basic " +
+                    btoa(`${loginInfor.username}:${loginInfor.password}`),
+            );
+        },
         success: function (response) {
             //
             var content = "";
@@ -350,7 +413,9 @@ function validationField(errorId, inputId, rules) {
     }
 
     if (rules.length && inputValue.length > rules.length) {
-        $(`#${errorId}`).append(`${rules.name} không dài quá ${rules.length} kí tự`);
+        $(`#${errorId}`).append(
+            `${rules.name} không dài quá ${rules.length} kí tự`,
+        );
         return false;
     }
 
@@ -375,3 +440,10 @@ function hideAndResetModal() {
 $("#modal-id").on("hidden.bs.modal", function () {
     hideAndResetModal();
 });
+
+function logout() {
+    // tro ve trang dang nhap
+    window.open("./login.html", "_self");
+    // clear localStorage
+    localStorage.removeItem("loginInfor");
+}
