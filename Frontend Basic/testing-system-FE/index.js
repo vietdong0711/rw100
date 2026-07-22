@@ -25,8 +25,6 @@ var fullnameRules = {
 };
 var loginInfor = JSON.parse(localStorage.getItem("loginInfor"));
 
-console.log("loginInfor: " + loginInfor);
-
 loadData(); // load ra ds account
 loadDepartment();
 loadPosition();
@@ -73,11 +71,7 @@ function loadData() {
         url: baseUrl + subUrl,
         dataType: "JSON",
         beforeSend: function (xhr) {
-            xhr.setRequestHeader(
-                "Authorization",
-                "Basic " +
-                    btoa(`${loginInfor.username}:${loginInfor.password}`),
-            );
+            xhr.setRequestHeader("Authorization", `Bearer ${loginInfor.token}`);
         },
         headers: {
             Authorization: "Basic " + btoa("admin:123456"),
@@ -162,8 +156,7 @@ function onDelete(idDelete) {
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(
                     "Authorization",
-                    "Basic " +
-                        btoa(`${loginInfor.username}:${loginInfor.password}`),
+                    `Bearer ${loginInfor.token}`,
                 );
             },
             success: function (response) {
@@ -214,8 +207,7 @@ function onCreate() {
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(
                     "Authorization",
-                    "Basic " +
-                        btoa(`${loginInfor.username}:${loginInfor.password}`),
+                    `Bearer ${loginInfor.token}`,
                 );
             },
             success: function (response) {
@@ -262,11 +254,7 @@ function onHandleEdit(idUpdate) {
         url: baseUrl + "/" + idUpdate,
         dataType: "JSON",
         beforeSend: function (xhr) {
-            xhr.setRequestHeader(
-                "Authorization",
-                "Basic " +
-                    btoa(`${loginInfor.username}:${loginInfor.password}`),
-            );
+            xhr.setRequestHeader("Authorization", `Bearer ${loginInfor.token}`);
         },
         success: function (response) {
             $(".modal-title").empty();
@@ -318,8 +306,7 @@ function onUpdate(idDelete) {
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(
                     "Authorization",
-                    "Basic " +
-                        btoa(`${loginInfor.username}:${loginInfor.password}`),
+                    `Bearer ${loginInfor.token}`,
                 );
             },
             success: function (response) {
@@ -344,11 +331,7 @@ function loadDepartment() {
         url: baseUrlDepartment,
         dataType: "JSON",
         beforeSend: function (xhr) {
-            xhr.setRequestHeader(
-                "Authorization",
-                "Basic " +
-                    btoa(`${loginInfor.username}:${loginInfor.password}`),
-            );
+            xhr.setRequestHeader("Authorization", `Bearer ${loginInfor.token}`);
         },
         success: function (response) {
             //
@@ -376,11 +359,7 @@ function loadPosition() {
         url: baseUrlPosition,
         dataType: "JSON",
         beforeSend: function (xhr) {
-            xhr.setRequestHeader(
-                "Authorization",
-                "Basic " +
-                    btoa(`${loginInfor.username}:${loginInfor.password}`),
-            );
+            xhr.setRequestHeader("Authorization", `Bearer ${loginInfor.token}`);
         },
         success: function (response) {
             //

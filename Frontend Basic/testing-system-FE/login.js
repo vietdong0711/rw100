@@ -4,22 +4,21 @@ function handleLogin() {
     // lấy username + password
     var inputUsername = $("#inputUsername").val();
     var inputPassword = $("#inputPassword").val();
+    var acc = {
+        username: inputUsername,
+        password: inputPassword,
+    };
 
     // call api login
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: baseUrl + "/login",
-        dataType: "JSON",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(
-                "Authorization",
-                "Basic " + btoa(`${inputUsername}:${inputPassword}`),
-            );
-        },
+        contentType: "application/json",
+        data: JSON.stringify(acc),
         success: function (response) {
             var acc = {
                 username: inputUsername,
-                password: inputPassword,
+                token: response.token,
             };
             localStorage.setItem("loginInfor", JSON.stringify(acc));
             alert("Đăng nhập thành công");
